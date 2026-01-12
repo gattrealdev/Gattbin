@@ -2,5 +2,10 @@
   "routes": [
     { "src": "/p/(.*)", "dest": "/pastes/$1/index.html" },
     { "src": "/raw/(.*)", "dest": "/pastes/$1/raw.txt" }
-  ]
+  ],
+  "functions": {
+    "api/*.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
 }
