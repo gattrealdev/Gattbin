@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Paste</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      background:#0f172a;
+      color:#e5e7eb;
+      font-family: Arial, sans-serif;
+      padding:40px;
+    }
+    .box {
+      max-width:700px;
+      margin:auto;
+      background:#020617;
+      padding:20px;
+      border-radius:10px;
+    }
+    input, textarea, button {
+      width:100%;
+      margin-top:10px;
+      padding:10px;
+      background:#020617;
+      border:1px solid #334155;
+      color:#fff;
+      border-radius:6px;
+    }
+    button {
+      background:#2563eb;
+      border:none;
+      cursor:pointer;
+    }
+    button:hover {
+      background:#1d4ed8;
+    }
+    .result {
+      margin-top:15px;
+      color:#38bdf8;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Create Paste</h2>
+
+  <input id="title" placeholder="Judul" required>
+  <textarea id="content" rows="8" placeholder="Isi" required></textarea>
+  <input id="desc" placeholder="Deskripsi (opsional)">
+  <input id="password" placeholder="Password (opsional)">
+  <button onclick="createPaste()">Create</button>
+
+  <div class="result" id="result"></div>
+</div>
+
+<script>
+async function createPaste() {
+  const data = {
+    title: document.getElementById('title').value,
+    content: document.getElementById('content').value,
+    desc: document.getElementById('desc').value,
+    password: document.getElementById('password').value
+  };
+
+  const res = await fetch('/api/create', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+
+  const json = await res.json();
+
+  if (json.success) {
+    document.getElementById('result').innerHTML =
+      `✔ Created: <a href="${json.url}">${json.url}</a> |
+       <a href="${json.raw}">RAW</a>`;
+  } else {
+    document.getElementById('result').textContent = json.error;
+  }
+}
+</script>
+
+</body>
+</html>
