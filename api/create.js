@@ -18,7 +18,8 @@ async function push(path, content) {
     headers: {
       Authorization: `token ${TOKEN}`,
       'Content-Type': 'application/json',
-      'User-Agent': 'vercel'
+      Accept: "application/vnd.github+json",
+  "User-Agent": "vercel-function"
     },
     body: JSON.stringify({
       message: `create ${path}`,
