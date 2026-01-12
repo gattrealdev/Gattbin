@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import fetch from 'node-fetch';
 
-const TOKEN = process.env.GITHUB_TOKEN;
+const TOKEN = "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";
 const REPO = "gattrealdev/Gattbin"; // username/repo
 const BRANCH = 'main';
 
