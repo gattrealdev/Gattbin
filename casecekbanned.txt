@@ -1,0 +1,44 @@
+case 'cekbanned': {
+    if (!text) {
+        await sock.sendMessage(from, {
+            text: 'Contoh penggunaan:\n.cekbanned 6281234567890'
+        }, { quoted: msg })
+        break
+    }
+
+    // bersihin nomor
+    let target = text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
+
+    try {
+        let res = await sock.checkWhatsApp(target)
+
+        if (res.length === 0) {
+            await sock.sendMessage(from, {
+                text: '❌ Nomor tidak terdaftar di WhatsApp'
+            }, { quoted: msg })
+            break
+        }
+
+        let info = res[0]
+
+        if (info.exists) {
+            await sock.sendMessage(from, {
+                text: `INFO BANNED
+                JID: ${info.jid} \n> succes by milodeveloper`
+            }, { quoted: msg })
+        } else {
+            await sock.sendMessage(from, {
+                text: `🚫 Nomor *TIDAK TERDAFTAR / TERBANNED*\n\nWhatsApp: Tidak`
+            }, { quoted: msg })
+        }
+
+    } catch (err) {
+        console.error(err)
+        await sock.sendMessage(from, {
+            text: '⚠️ Gagal cek nomor, coba lagi'
+        }, { quoted: msg })
+    }
+}
+break
+
+// baileys = kiuur/baileys
