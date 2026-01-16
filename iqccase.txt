@@ -1,0 +1,85 @@
+    case 'iqc': {
+        if (args.length === 0) {
+            await sock.sendMessage(
+                m.key.remoteJid,
+                { 
+                    text: `❌ *FORMAT SALAH!*\n\nContoh yang benar:\n*.quote pesan mu disini|nama operator*\n\nContoh:\n.quote Hello World|Telkomsel\n.quote Semangat pagi semua!|Indosat\n\n*Note:*\n• Gunakan "|" sebagai pemisah\n• Nama operator bebas (XL, Smartfren, dll)`
+                },
+                { quoted: m }
+            );
+            return;
+        }
+
+        const inputText = body.slice(command.length + 1).trim();
+        const splitText = inputText.split('|');
+        
+        if (splitText.length < 2) {
+            await sock.sendMessage(
+                m.key.remoteJid,
+                { 
+                    text: `📛 *INPUT TIDAK LENGKAP!*\n\nKamu lupa pakai "|" atau lupa isi operator.\n\nFormat: *.quote pesan|operator*\n\nContoh:\n.quote Selamat pagi|Three\n.quote Keep smiling|Axis\n\nTolong diisi dengan benar ya 🙏`
+                },
+                { quoted: m }
+            );
+            return;
+        }
+
+        const messageText = splitText[0].trim();
+        const carrierName = splitText[1].trim();
+        
+        if (!messageText) {
+            await sock.sendMessage(
+                m.key.remoteJid,
+                { 
+                    text: `📝 *PESAN KOSONG!*\n\nKamu belum isi pesan yang mau ditampilkan.\n\nContoh:\n.quote *Halo dunia*|Telkomsel\n.quote *Good morning*|Smartfren\n\nIsi pesanmu dulu ya! ✨`
+                },
+                { quoted: m }
+            );
+            return;
+        }
+        
+        if (!carrierName) {
+            await sock.sendMessage(
+                m.key.remoteJid,
+                { 
+                    text: `📶 *OPERATOR KOSONG!*\n\nKamu lupa isi nama operator kartu.\n\nContoh:\n.quote Pesan mu disini|*Telkomsel*\n.quote Tes 123|*XL*\n\nKasih tahu nama operatormu dong! 📱`
+                },
+                { quoted: m }
+            );
+            return;
+        }
+
+        try {
+            const waktuSekarang = new Date();
+            const jam = waktuSekarang.getHours().toString().padStart(2, '0');
+            const menit = waktuSekarang.getMinutes().toString().padStart(2, '0');
+            const waktuFormat = `${jam}:${menit}`;
+            
+            const persenBaterai = Math.floor(Math.random() * 100) + 1;
+            
+            const urlApi = `https://brat.siputzx.my.id/iphone-quoted?time=${waktuFormat}&messageText=${encodeURIComponent(messageText)}&carrierName=${encodeURIComponent(carrierName)}&batteryPercentage=${persenBaterai}&signalStrength=4&emojiSty`;
+            
+            await sock.sendMessage(
+                m.key.remoteJid,
+                { 
+                    image: { url: urlApi },
+                    caption: `✅ *iPhone Quote Berhasil!*\n\n📝 Pesan: ${messageText}\n📶 Operator: ${carrierName}\n🔋 Baterai: ${persenBaterai}%\n⏰ Waktu: ${waktuFormat}\n\nDibuat dengan ❤️ oleh ${pushname}`
+                },
+                { quoted: m }
+            );
+            
+        } catch (error) {
+            console.error('Error membuat quote:', error);
+            await sock.sendMessage(
+                m.key.remoteJid,
+                { 
+                    text: `😔 *GAGAL MEMBUAT QUOTE*\n\nMaaf ya, ada masalah di server. Coba lagi beberapa saat ya?\n\nKalau masih error, coba ganti pesan atau operatornya.\n\n*Error details:* ${error.message}`
+                },
+                { quoted: m }
+            );
+        }
+        break;
+}
+
+// share by Gatt
+// created Maesteo Ai
