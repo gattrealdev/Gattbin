@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Case ReactWa | PasteGatt</title>
+<style>
+body {
+  background:#0f172a;
+  color:#e5e7eb;
+  font-family:system-ui;
+  padding:30px;
+}
+.container {
+  max-width:900px;
+  margin:auto;
+}
+h1 {
+  color:#60a5fa;
+}
+h2 {
+  color:#cbd5f5;
+  font-weight:400;
+}
+pre {
+  background:#020617;
+  padding:20px;
+  border-radius:10px;
+  overflow:auto;
+  white-space:pre-wrap;
+}
+.btn {
+  padding:8px 14px;
+  border:none;
+  border-radius:8px;
+  background:#3b82f6;
+  color:white;
+  cursor:pointer;
+  margin-right:8px;
+}
+.meta {
+  margin-top:15px;
+  font-size:14px;
+  color:#94a3b8;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>PasteGatt</h1>
+  <h2>Case ReactWa</h2>
+
+  <div>
+    <button class="btn" onclick="copy()">Copy</button>
+    <button class="btn" onclick="raw()">Raw</button>
+  </div>
+
+  <pre id="content">
+// author : Gatt
+// Helper : Maesteo AI
+// Tag: Node.js,Baileys
+
+
+case 'reactwa': {
+  const input = body.slice(8).trim();
+  const [linkPart, emojiPart, countPart] = input.split('|');
+  
+  if (!linkPart || !emojiPart || !countPart) {
+    return sock.sendMessage(from, {
+      text: '❌ Format salah!\n\nContoh penggunaan:\n.reactwa https://whatsapp.com/channel/0029VbBfipy2975GOjz9uf1Y/135|😀,😍,👍|10'
+    }, { quoted: m });
+  }
+
+  try {
+    const channelRegex = /channel\/([A-Za-z0-9]+)\/(\d+)/;
+    const match = linkPart.match(channelRegex);
+    
+    if (!match) {
+      return sock.sendMessage(from, {
+        text: '❌ Link channel tidak valid!\nPastikan link mengandung ID channel dan message ID.\nContoh: https://whatsapp.com/channel/0029VbBfipy2975GOjz9uf1Y/135'
+      }, { quoted: m });
+    }
+
+    const channelId = match[1];
+    const messageId = match[2];
+    const emojis = emojiPart.split(',').map(e =&gt; e.trim()).filter(e =&gt; e);
+    const count = parseInt(countPart);
+    
+    if (emojis.length === 0) {
+      return sock.sendMessage(from, {
+        text: '❌ Minimal 1 emoji diperlukan!'
+      }, { quoted: m });
+    }
+    
+    if (isNaN(count) || count &lt; 1 || count &gt; 15000) {
+      return sock.sendMessage(from, {
+        text: '❌ Jumlah harus antara 1-15000!'
+      }, { quoted: m });
+    }
+
+    const remoteJid = `${channelId}@newsletter`;
+    const messageKey = {
+      remoteJid: remoteJid,
+      id: messageId,
+      fromMe: false,
+      participant: undefined
+    };
+
+    let successCount = 0;
+    let failedCount = 0;
+    
+    const progressMsg = await sock.sendMessage(from, {
+      text: `⏳ Memulai pengiriman reaction...\n📊 Target: ${count} reactions\n🎯 Emoji: ${emojis.join(', ')}`
+    });
+
+    const delay = ms =&gt; new Promise(resolve =&gt; setTimeout(resolve, ms));
+
+    for (let i = 0; i &lt; count; i++) {
+      try {
+        const emoji = emojis[i % emojis.length];
+        
+        await sock.sendMessage(remoteJid, {
+          react: {
+            text: emoji,
+            key: messageKey
+          }
+        });
+        
+        successCount++;
+        
+        if ((i + 1) % 5 === 0 || i === count - 1) {
+          await sock.sendMessage(from, {
+            text: `📊 Progress: ${i + 1}/${count} reactions\n✅ Berhasil: ${successCount}\n❌ Gagal: ${failedCount}`
+          }, { quoted: progressMsg });
+        }
+        
+        await delay(500 + Math.random() * 500);
+        
+      } catch (error) {
+        failedCount++;
+        console.error(`Error reaction ${i + 1}:`, error);
+      }
+    }
+
+
+    await sock.sendMessage(from, {
+      text: `✅ Selesai!\n\n📊 Hasil akhir:\n├ Total dikirim: ${count}\n├ Berhasil: ${successCount}\n└ Gagal: ${failedCount}\n\n🎯 Emoji yang digunakan: ${emojis.join(', ')}`
+    }, { quoted: progressMsg });
+
+  } catch (error) {
+    console.error(error);
+    await sock.sendMessage(from, {
+      text: `❌ Terjadi kesalahan:\n${error.message}`
+    }, { quoted: m });
+  }
+  break;
+}
+
+// share By Milo
+// Created By Maesteo AI</pre>
+
+  <div class="meta">Dibuat pada: 16/1/2026, 15.41.31</div>
+</div>
+
+<script>
+function copy() {
+  navigator.clipboard.writeText(document.getElementById('content').innerText);
+  alert('Copied!');
+}
+function raw() {
+  window.location.href = location.href.replace('vercel.app','raw.githubusercontent.com')
+    .replace('/','/gattrealdev/Gattbin/main/');
+}
