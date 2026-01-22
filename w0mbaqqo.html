@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Tes | PasteGatt</title>
+<style>
+body {
+  background:#0f172a;
+  color:#e5e7eb;
+  font-family:system-ui;
+  padding:30px;
+}
+.container {
+  max-width:900px;
+  margin:auto;
+}
+h1 {
+  color:#60a5fa;
+}
+h2 {
+  color:#cbd5f5;
+  font-weight:400;
+}
+pre {
+  background:#020617;
+  padding:20px;
+  border-radius:10px;
+  overflow:auto;
+  white-space:pre-wrap;
+}
+.btn {
+  padding:8px 14px;
+  border:none;
+  border-radius:8px;
+  background:#3b82f6;
+  color:white;
+  cursor:pointer;
+  margin-right:8px;
+}
+.meta {
+  margin-top:15px;
+  font-size:14px;
+  color:#94a3b8;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>PasteGatt</h1>
+  <h2>Tes</h2>
+
+  <div>
+    <button class="btn" onclick="copy()">Copy</button>
+    <button class="btn" onclick="raw()">Raw</button>
+  </div>
+
+  <pre id="content">Haidar</pre>
+
+  <div class="meta">Dibuat pada: 22/1/2026, 15.45.22</div>
+</div>
+
+<script>
+function copy() {
+  navigator.clipboard.writeText(document.getElementById('content').innerText);
+  alert('Copied!');
+}
+function raw() {
+  window.location.href = location.href.replace('vercel.app','raw.githubusercontent.com')
+    .replace('/','/gattrealdev/Gattbin/main/');
+}
