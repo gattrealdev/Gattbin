@@ -1,0 +1,424 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Injected By 0xMilo</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;           /* cegah double scrollbar */
+}
+
+/* ====== OVERLAY PAKSA - BODY SEBAGAI OVERLAY UTAMA ====== */
+body {
+    /* kunci overlay di atas segalanya */
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;  /* fix address bar mobile */
+    z-index: 2147483647 !important;   /* nilai int32 maksimum */
+    overflow-y: auto !important;      /* konten tetap bisa discroll */
+    overflow-x: hidden !important;
+    isolation: isolate !important;    /* stacking context sendiri */
+    margin: 0 !important;
+
+    /* style asli body */
+    background: #aeb2ae;
+    color: #fff;
+    font-family: 'Share Tech Mono', monospace;
+}
+/* VIDEO */
+#overlay-root {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    z-index: 2147483647 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    isolation: isolate !important;
+    background: #aeb2ae;
+    color: #fff;
+    font-family: 'Share Tech Mono', monospace;
+}
+.video {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -3;
+}
+
+/* BACKGROUND LAYER */
+
+.background {
+    position: fixed;
+    inset: 0;
+    background: rgba(175, 180, 175, .87);
+    z-index: -2;
+}
+
+/* MATRIX */
+
+#matrix {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: .48;
+    pointer-events: none;
+}
+
+/* CONTENT */
+
+.wrapper {
+    width: 100%;
+    max-width: 750px;
+    min-height: 100%;          /* ← ganti dari 100vh */
+    margin: auto;
+    padding: 75px 22px 45px;
+    text-align: center;
+    position: relative;
+}
+
+.logo {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 30px;
+    border: 1px solid rgba(255,255,255,.4);
+}
+
+.heading {
+    color: #e71925;
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(20px, 5vw, 34px);
+    font-weight: 700;
+    line-height: 1.4;
+    text-shadow: 0 0 8px rgba(255,0,0,.5);
+}
+
+.subheading {
+    margin-top: 17px;
+    font-size: 17px;
+    color: #fff;
+}
+
+.red {
+    color: #d71925;
+    font-weight: bold;
+}
+
+.divider {
+    width: 65px;
+    height: 1px;
+    background: rgba(255,255,255,.5);
+    margin: 25px auto;
+}
+
+.description {
+    font-size: 16px;
+    line-height: 1.45;
+    text-align: center;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,.35);
+}
+
+.quote {
+    margin: 32px 0;
+    color: #c91e2c;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.greeting {
+    font-size: 16px;
+    line-height: 1.8;
+    margin-top: 20px;
+}
+
+.thanks {
+    margin-top: 45px;
+}
+
+.thanks-title {
+    color: #df222d;
+    font-size: 15px;
+    margin-bottom: 18px;
+}
+
+.thanks-names {
+    font-size: 14px;
+    line-height: 2;
+}
+
+.button {
+    display: block;
+    width: 85%;
+    max-width: 470px;
+    margin: 40px auto 30px;
+    padding: 17px 10px;
+    border: 2px solid #df1c2b;
+    color: white;
+    background: rgba(255,255,255,.08);
+    box-shadow: 0 0 9px #ed1b2e,
+                inset 0 0 8px rgba(237,27,46,.15);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.operation {
+    font-size: 14px;
+    line-height: 2;
+}
+
+.clock {
+    margin-top: 25px;
+    font-size: 23px;
+    letter-spacing: 2px;
+}
+
+.date {
+    margin-top: 12px;
+    font-size: 19px;
+    letter-spacing: 1px;
+}
+
+.footer {
+    margin-top: 45px;
+    color: rgba(255,255,255,.55);
+    font-size: 12px;
+}
+
+.music {
+    margin-top: 25px;
+    border: 1px solid rgba(255,255,255,.5);
+    background: transparent;
+    padding: 10px 22px;
+    color: white;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+@media(max-width: 480px) {
+    .wrapper {
+        padding: 75px 20px 35px;
+    }
+
+    .description {
+        font-size: 15px;
+    }
+
+    .heading {
+        font-size: 23px;
+    }
+
+    .clock {
+        font-size: 21px;
+    }
+}
+</style>
+</head>
+
+<body>
+    <div id="overlay-root">
+<video class="video" autoplay muted loop playsinline>
+    <source src="https://static.videezy.com/system/resources/previews/000/039/679/original/alb_matx002_1080p.mp4" type="video/mp4">
+</video>
+
+<div class="background"></div>
+<canvas id="matrix"></canvas>
+
+<main class="wrapper">
+
+    <img src="https://uploader.miloenak.web.id/files/d48ebc20-5fe5-45cd-a8b8-a4811721241b.png" class="logo" alt="Logo">
+
+    <h1 class="heading">
+        Injected By 0xmilo
+    </h1>
+
+    <div class="subheading">
+        <span class="red">Tegal Anonymous</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <p class="description">
+        Kami adalah Team Black Hat Yang Tak akan pernah runtuh seiring bertambahnya teknologi,
+        Sebab semua teknologi pasti memiliki celah keamanan
+
+        <br><br>
+
+        From Cyber To Brotherhood, kami adalah keluarga siber crimin yang bekerja
+        di underground, dan kami akan selalu ada di manapun teknologi ada.
+
+        <br><br>
+
+        temui kami, dimana pun kamu melihat teknologi
+    </p>
+
+    <div class="quote">
+        "Tidak ada sistem yang aman di dunia"
+    </div>
+
+    <div class="greeting">
+        Salam untuk seluruh
+        <span class="red">Cyber Community</span>.
+
+        <br>
+        Semua akan diretas, jika sudah saatnya
+    </div>
+
+    <section class="thanks">
+        <div class="thanks-title">
+            — SPECIAL THANKS TO —
+        </div>
+
+        <div class="thanks-names">
+            Tegal Cyber Team <span class="red">#</span>
+            Matdugal Cyber Team<br>
+
+            All Contributors <span class="red">#</span>
+            All Friends
+        </div>
+    </section>
+
+    <a class="button" href="t.me/miloanakkecil">
+        CONTACT THE TEAM
+    </a>
+
+    <div class="operation">
+        Operation
+        <span class="red">#FromCyberToBrotherhood #BlackHat</span>
+    </div>
+
+    <div class="clock" id="clock">00:00:00</div>
+
+    <div class="date" id="date">
+        Loading date...
+    </div>
+
+    <button class="music" id="musicBtn">
+        ♫ PLAY MUSIC
+    </button>
+
+    <audio id="music" loop>
+        <source src="https://files.catbox.moe/ylrz16.m4a" type="audio/mpeg">
+    </audio>
+
+    <footer class="footer">
+        © 2026 | Tegal Anonymous - 0xmilo
+    </footer>
+
+</main>
+    </div>
+<script>
+// MATRIX BACKGROUND
+
+const canvas = document.getElementById('matrix');
+const ctx = canvas.getContext('2d');
+
+let width, height, columns, drops;
+
+function resize() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+
+    columns = Math.floor(width / 25);
+    drops = Array(columns).fill(1);
+}
+
+resize();
+window.addEventListener('resize', resize);
+
+const chars = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+function drawMatrix() {
+    ctx.fillStyle = 'rgba(175,180,175,0.13)';
+    ctx.fillRect(0, 0, width, height);
+
+    ctx.font = '15px Share Tech Mono';
+
+    for (let i = 0; i < drops.length; i++) {
+        const char = chars[Math.floor(Math.random() * chars.length)];
+
+        ctx.fillStyle = 'rgba(70,190,100,0.8)';
+        ctx.fillText(char, i * 25, drops[i] * 20);
+
+        if (drops[i] * 20 > height && Math.random() > 0.975) {
+            drops[i] = 0;
+        }
+
+        drops[i]++;
+    }
+}
+
+setInterval(drawMatrix, 75);
+
+
+// REAL TIME CLOCK
+
+function updateClock() {
+    const now = new Date();
+
+    document.getElementById('clock').textContent =
+        now.toLocaleTimeString('id-ID', {
+            timeZone: 'Asia/Jakarta',
+            hour12: false
+        });
+
+    document.getElementById('date').textContent =
+        now.toLocaleDateString('id-ID', {
+            timeZone: 'Asia/Jakarta',
+            weekday: 'long',
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
+}
+
+updateClock();
+setInterval(updateClock, 1000);
+
+
+// MUSIC
+
+const music = document.getElementById('music');
+const musicBtn = document.getElementById('musicBtn');
+
+musicBtn.addEventListener('click', async () => {
+    if (music.paused) {
+        try {
+            await music.play();
+            musicBtn.textContent = '♫ PAUSE BACKGROUND MUSIC';
+        } catch {
+            musicBtn.textContent = 'MUSIC UNAVAILABLE';
+        }
+    } else {
+        music.pause();
+        musicBtn.textContent = '♫ PLAY BACKGROUND MUSIC';
+    }
+});
+</script>
+
+</body>
+</html>
